@@ -1,0 +1,18 @@
+DexBridge third-party runtime notice
+====================================
+
+scrcpy
+------
+Project: https://github.com/Genymobile/scrcpy
+Copyright (C) 2018-2026 Genymobile / Romain Vimont
+License: Apache License 2.0
+
+DexBridge v0.7 includes a scrcpy 5.0 Windows runtime supplied for this build
+under runtime\scrcpy. DexBridge uses scrcpy internally for video/audio/input
+transport and uses the ADB executable shipped in that Windows runtime.
+
+The accompanying upstream LICENSE.txt is retained under runtime\scrcpy and is
+also copied into packaged release licenses by tools\Build-Portable.ps1.
+
+DexBridge is not affiliated with Samsung, Google, Genymobile, or the scrcpy
+project.

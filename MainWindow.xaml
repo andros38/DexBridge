@@ -1,0 +1,345 @@
+<Window x:Class="DexBridge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DexBridge" Height="860" Width="1280" MinHeight="660" MinWidth="1120"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Foreground="{DynamicResource PrimaryTextBrush}"
+        Icon="Assets/dexbridge-logo.png">
+    <Grid x:Name="RootGrid" Margin="18" Background="{DynamicResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="HeaderBar" Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Border x:Name="BrandLogoBorder" Width="44" Height="44" CornerRadius="10" Margin="0,2,12,0" Background="#14000000" BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="1">
+                    <Image Source="Assets/dexbridge-logo.png" Stretch="Uniform" Margin="5"/>
+                </Border>
+                <StackPanel>
+                    <TextBlock x:Name="BrandTitleText" Text="DexBridge" FontSize="30" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="VersionCreditText" Margin="0,4,0,0" Foreground="{DynamicResource SecondaryTextBrush}"
+                               Text="© Ahmad Asyhari"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="610">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Language"/>
+                    <ComboBox x:Name="LanguageCombo" Width="137" Margin="0,0,12,0" SelectionChanged="LanguageCombo_SelectionChanged">
+                        <ComboBoxItem Tag="id" Content="Bahasa Indonesia"/>
+                        <ComboBoxItem Tag="en" Content="English"/>
+                    </ComboBox>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Appearance"/>
+                    <ComboBox x:Name="ThemeCombo" Width="114" Margin="0,0,12,0" SelectionChanged="ThemeCombo_SelectionChanged">
+                        <ComboBoxItem Tag="system" Content="System"/>
+                        <ComboBoxItem Tag="light" Content="Light"/>
+                        <ComboBoxItem Tag="dark" Content="Dark"/>
+                        <ComboBoxItem Tag="oled" Content="OLED Dark"/>
+                    </ComboBox>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Layout"/>
+                    <ComboBox x:Name="LayoutCombo" Width="106" SelectionChanged="LayoutCombo_SelectionChanged"
+                              ToolTip="Choose between the standard and compact dashboard layout">
+                        <ComboBoxItem Tag="standard" Content="Standard"/>
+                        <ComboBoxItem Tag="compact" Content="Compact"/>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                    <TextBlock x:Name="RuntimeStatusText" FontSize="11" FontWeight="SemiBold" Margin="0,0,14,0"
+                               VerticalAlignment="Center" Text="Runtime: checking…"/>
+                    <TextBlock x:Name="UsbStatusText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"
+                               MaxWidth="250" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="USB debugging: checking…"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Background="Transparent" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
+            <StackPanel x:Name="ContentSectionsPanel" Margin="0,0,8,6">
+                <Grid x:Name="DashboardGrid" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.15*"/>
+                        <ColumnDefinition Width="1.85*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox x:Name="QuickSetupGroup" Grid.Column="0" Header="Galaxy &amp; quick setup" Margin="0,0,7,0">
+                        <Grid x:Name="QuickSetupGrid" Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="112"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Galaxy"/>
+                            <ComboBox x:Name="DeviceCombo" Grid.Row="0" Grid.Column="1" Margin="5" MinHeight="30" DisplayMemberPath="DisplayName"
+                                      SelectionChanged="DeviceCombo_SelectionChanged"/>
+                            <Button Grid.Row="0" Grid.Column="2" Margin="5" Click="RefreshDevices_Click">Refresh</Button>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Session mode"/>
+                            <ComboBox x:Name="SessionModeCombo" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
+                                      SelectionChanged="SessionModeCombo_SelectionChanged">
+                                <ComboBoxItem Tag="desktop" Content="DeX desktop"/>
+                                <ComboBoxItem Tag="app" Content="App / Game"/>
+                                <ComboBoxItem Tag="mirror" Content="Screen mirroring"/>
+                            </ComboBox>
+
+                            <TextBlock x:Name="DesktopProfileLabel" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Desktop profile"/>
+                            <ComboBox x:Name="PresetCombo" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
+                                      SelectionChanged="PresetCombo_SelectionChanged">
+                                <ComboBoxItem Tag="desktop-balanced" Content="Desktop Balanced · 1080p" ToolTip="1920×1080 / 220 DPI / H.264 / 16 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="desktop-compact" Content="Desktop Compact · 1080p" ToolTip="1920×1080 / 180 DPI / H.264 / 16 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="desktop-sharp" Content="Desktop Sharp · 1440p" ToolTip="2560×1440 / 200 DPI / H.265 / 24 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="youtube-quality" Content="YouTube Quality · HEVC" ToolTip="1920×1080 / 240 DPI / H.265 / 32 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="youtube-balanced" Content="YouTube Balanced · HEVC" ToolTip="1920×1080 / 240 DPI / H.265 / 20 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="custom" Content="Custom (Advanced)"/>
+                            </ComboBox>
+                            <TextBlock x:Name="ApplicationLabel" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Application"/>
+                            <ComboBox x:Name="ApplicationCombo" Grid.Row="3" Grid.Column="1" Margin="5" MinHeight="30"
+                                      DisplayMemberPath="DisplayText" IsTextSearchEnabled="True"
+                                      SelectionChanged="ApplicationCombo_SelectionChanged"/>
+                            <StackPanel x:Name="ApplicationActionsPanel" Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+                                <Button x:Name="FavoriteAppButton" Width="38" Margin="5" Click="FavoriteApp_Click" ToolTip="Favorite selected app">☆</Button>
+                                <Button x:Name="RefreshAppsButton" Margin="0,5,5,5" Click="RefreshApps_Click">Apps</Button>
+                            </StackPanel>
+
+                            <TextBlock x:Name="ApplicationSearchLabel" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Search apps"/>
+                            <TextBox x:Name="ApplicationSearchBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" MinHeight="28"
+                                     ToolTip="Filter installed apps by name or package" TextChanged="ApplicationSearchBox_TextChanged"/>
+
+                            <TextBlock x:Name="GamingProfileLabel" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="App profile"/>
+                            <ComboBox x:Name="GamingProfileCombo" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
+                                      ToolTip="Saved separately for each app. Media portrait prioritizes phone-style video details; media landscape prioritizes widescreen viewing."
+                                      SelectionChanged="GamingProfileCombo_SelectionChanged">
+                                <ComboBoxItem Tag="performance" Content="Game Performance · 900p" ToolTip="1600×900 / 240 DPI / H.264 / 16 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="balanced" Content="Game Balanced · 1080p" ToolTip="1920×1080 / 240 DPI / H.264 / 20 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="quality" Content="Game Quality · 1080p" ToolTip="1920×1080 / 240 DPI / H.265 / 24 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="maximum" Content="Game Maximum · 1440p" ToolTip="2560×1440 / 240 DPI / H.265 / 32 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="youtube-quality" Content="YouTube Quality · HEVC" ToolTip="1920×1080 / 240 DPI / H.265 / 32 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="youtube-balanced" Content="YouTube Balanced · HEVC" ToolTip="1920×1080 / 240 DPI / H.265 / 20 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="media-portrait" Content="Media Portrait · 1080×1920" ToolTip="1080×1920 / 420 DPI / H.265 / 16 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="media-landscape" Content="Media Landscape · 1080p" ToolTip="1920×1080 / 240 DPI / H.265 / 20 Mbps / 60 FPS"/>
+                                <ComboBoxItem Tag="custom" Content="Custom"/>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Text="Controller"/>
+                            <CheckBox x:Name="GamepadCheck" Grid.Row="6" Grid.Column="1" Margin="7,8,5,6"
+                                      Content="Forward PC gamepad (UHID)"
+                                      Checked="GamepadCheck_Changed" Unchecked="GamepadCheck_Changed"/>
+                            <TextBlock x:Name="ControllerStatusText" Grid.Row="6" Grid.Column="2" Margin="8,0,5,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" Text="Off"/>
+
+                            <TextBlock x:Name="AppLibrarySummaryText" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Margin="6,1,5,3"
+                                       FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="App library not loaded"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox x:Name="DeviceMonitorGroup" Grid.Column="1" Header="Device monitor" Margin="7,0,0,0">
+                        <Grid x:Name="DeviceMonitorGrid" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1.25*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="6,4,10,4">
+                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Text="CPU"/>
+                                    <TextBlock x:Name="CpuUsageText" FontSize="20" FontWeight="SemiBold" Text="—"/>
+                                    <TextBlock x:Name="CpuTempText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Temp —" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="6,4,10,4">
+                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Text="RAM"/>
+                                    <TextBlock x:Name="RamUsageText" FontSize="20" FontWeight="SemiBold" Text="—"/>
+                                    <TextBlock x:Name="RamDetailText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="—" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Margin="6,4,10,4">
+                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Text="Battery"/>
+                                    <TextBlock x:Name="BatteryLevelText" FontSize="20" FontWeight="SemiBold" Text="—"/>
+                                    <TextBlock x:Name="BatteryTempText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Temp —" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Margin="6,4,10,4">
+                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Text="Thermal"/>
+                                    <TextBlock x:Name="ThermalStatusText" FontSize="20" FontWeight="SemiBold" Text="—"
+                                               ToolTip="Thermal status is the current Android framework throttling state; live HAL sensor severity is cross-checked when available."/>
+                                    <TextBlock x:Name="SkinTempText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="Skin —" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="4" Margin="6,4,6,4">
+                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" Text="Stream health"/>
+                                    <TextBlock x:Name="StreamFpsText" FontSize="20" FontWeight="SemiBold" Text="—"/>
+                                    <TextBlock x:Name="StreamHealthText" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Text="No active stream" TextWrapping="Wrap" Visibility="Collapsed" Height="0"/>
+                                </StackPanel>
+                            </Grid>
+                            <WrapPanel x:Name="MonitorActionsPanel" Grid.Row="1" HorizontalAlignment="Right" Margin="0,8,0,0">
+                                <Button Margin="4,0" Click="RefreshMonitor_Click">Refresh</Button>
+                                <Button Margin="4,0" Click="ThermalDetails_Click" ToolTip="Write validated framework/HAL thermal diagnostics to the session log">Thermal log</Button>
+                            </WrapPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+
+                <GroupBox x:Name="AdvancedSettingsGroup" Header="Advanced settings" Margin="0,0,0,12">
+                    <StackPanel x:Name="AdvancedSectionsPanel">
+                        <GroupBox x:Name="DisplayStreamGroup" Header="Display &amp; stream" Margin="0,7,0,7">
+                            <Grid x:Name="DisplayControlsGrid" Margin="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/><ColumnDefinition Width="145"/>
+                                    <ColumnDefinition Width="105"/><ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="90"/><ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Resolution"/>
+                                <ComboBox x:Name="ResolutionCombo" Grid.Row="0" Grid.Column="1" Margin="5" SelectionChanged="StreamSetting_SelectionChanged">
+                                    <ComboBoxItem Content="1600x900"/><ComboBoxItem Content="1080x1920"/><ComboBoxItem Content="1920x1080"/><ComboBoxItem Content="2560x1440"/><ComboBoxItem Content="3200x1800"/>
+                                </ComboBox>
+                                <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Text="DPI / UI size"/>
+                                <ComboBox x:Name="DpiCombo" Grid.Row="0" Grid.Column="3" Margin="5" SelectionChanged="StreamSetting_SelectionChanged">
+                                    <ComboBoxItem Content="160"/><ComboBoxItem Content="180"/><ComboBoxItem Content="200"/><ComboBoxItem Content="220"/><ComboBoxItem Content="240"/><ComboBoxItem Content="260"/><ComboBoxItem Content="284"/><ComboBoxItem Content="300"/><ComboBoxItem Content="320"/><ComboBoxItem Content="360"/><ComboBoxItem Content="420"/>
+                                </ComboBox>
+                                <TextBlock Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Text="Target FPS"/>
+                                <ComboBox x:Name="FpsCombo" Grid.Row="0" Grid.Column="5" Margin="5" SelectionChanged="StreamSetting_SelectionChanged"><ComboBoxItem Content="30"/><ComboBoxItem Content="45"/><ComboBoxItem Content="60"/></ComboBox>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Bitrate"/>
+                                <ComboBox x:Name="BitrateCombo" Grid.Row="1" Grid.Column="1" Margin="5" SelectionChanged="StreamSetting_SelectionChanged"><ComboBoxItem Content="8"/><ComboBoxItem Content="12"/><ComboBoxItem Content="16"/><ComboBoxItem Content="20"/><ComboBoxItem Content="24"/><ComboBoxItem Content="32"/><ComboBoxItem Content="40"/></ComboBox>
+                                <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Text="Video codec"/>
+                                <ComboBox x:Name="CodecCombo" Grid.Row="1" Grid.Column="3" Margin="5" SelectionChanged="StreamSetting_SelectionChanged"><ComboBoxItem Content="h264"/><ComboBoxItem Content="h265"/></ComboBox>
+                                <TextBlock Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Text="Keyboard"/>
+                                <ComboBox x:Name="KeyboardCombo" Grid.Row="1" Grid.Column="5" Margin="5" SelectionChanged="SettingsChoice_SelectionChanged"><ComboBoxItem Content="sdk"/><ComboBoxItem Content="uhid"/></ComboBox>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Mouse"/>
+                                <ComboBox x:Name="MouseCombo" Grid.Row="2" Grid.Column="1" Margin="5" SelectionChanged="SettingsChoice_SelectionChanged"><ComboBoxItem Content="sdk"/><ComboBoxItem Content="uhid"/></ComboBox>
+                                <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="Window mode"/>
+                                <ComboBox x:Name="GameWindowModeCombo" Grid.Row="2" Grid.Column="3" Margin="5" SelectionChanged="AppWindowMode_SelectionChanged">
+                                    <ComboBoxItem Tag="windowed" Content="Windowed"/>
+                                    <ComboBoxItem Tag="maximized" Content="Maximized"/>
+                                    <ComboBoxItem Tag="borderless" Content="Borderless fullscreen"/>
+                                </ComboBox>
+                                <CheckBox x:Name="NoDownsizeCheck" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="3" Margin="8" Content="Prevent video downscaling"
+                                          ToolTip="Do not silently downsize video" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox x:Name="TelemetryOptionsGroup" Header="Telemetry &amp; appearance" Margin="0,7,0,7">
+                            <WrapPanel x:Name="TelemetryOptionsPanel" Margin="12">
+                                <CheckBox x:Name="TelemetryCheck" Margin="6" Content="Performance telemetry" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="CpuTempTelemetryCheck" Margin="6" Content="CPU temperature" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="SkinTempTelemetryCheck" Margin="6" Content="Skin temperature" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="ThermalTelemetryCheck" Margin="6" Content="Thermal state" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="CpuTelemetryCheck" Margin="6" Content="CPU usage" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="CodecTelemetryCheck" Margin="6" Content="Codec" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="BitrateTelemetryCheck" Margin="6" Content="Bitrate" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="PrintFpsCheck" Margin="6" Content="Save FPS log" Checked="TelemetryOption_Changed" Unchecked="TelemetryOption_Changed"/>
+                                <CheckBox x:Name="NightLowContrastCheck" Margin="6" Content="Night contrast"
+                                          ToolTip="Reduce contrast in dark themes at night" Checked="NightLowContrastCheck_Changed" Unchecked="NightLowContrastCheck_Changed"/>
+                            </WrapPanel>
+                        </GroupBox>
+
+                        <GroupBox x:Name="CompatibilityOptionsGroup" Header="Compatibility &amp; power" Margin="0,7,0,7">
+                            <WrapPanel x:Name="CompatibilityOptionsPanel" Margin="12">
+                                <CheckBox x:Name="AudioCheck" Margin="6" Content="Audio to PC"
+                                          ToolTip="Forward audio to laptop" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="NoHoverCheck" Margin="6" Content="Disable mouse hover"
+                                          ToolTip="Disable mouse hover (SDK mouse)" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="TurnPhoneScreenOffCheck" Margin="6" Content="Keep phone screen off"
+                                          ToolTip="Keep phone panel off during session (without locking)" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="StayAwakeCheck" Margin="6" Content="Keep Android awake"
+                                          ToolTip="Keep Android awake over USB" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="ForceDpiCheck" Margin="6" Content="Force DPI"
+                                          ToolTip="Force selected DPI after display starts" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="HandoffDexAppsOnStopCheck" Margin="6" Content="Return apps on Stop"
+                                          ToolTip="Preserve/move apps to phone on Stop" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <CheckBox x:Name="CloseFailedHandoffTasksCheck" Margin="6" Content="Retry failed handoff"
+                                          ToolTip="Relaunch missing apps on phone if native handoff fails" Checked="PersistentOption_Changed" Unchecked="PersistentOption_Changed"/>
+                                <Button Margin="8,3" Click="EmergencyCleanup_Click">Emergency cleanup</Button>
+                            </WrapPanel>
+                        </GroupBox>
+
+                        <GroupBox x:Name="DeveloperRuntimeGroup" Header="Developer runtime" Margin="0,7,0,7">
+                            <Grid x:Name="DeveloperRuntimeGrid" Margin="12">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="scrcpy.exe"/>
+                                <TextBox x:Name="ScrcpyPathBox" Grid.Column="1" Margin="5" TextChanged="ScrcpyPathBox_TextChanged"/>
+                                <Button Grid.Column="2" Margin="5" Click="BrowseScrcpy_Click">Use external…</Button>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <Grid x:Name="LogsGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="1.1*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox x:Name="SessionLogGroup" Grid.Column="0" Header="Session log" Margin="0,0,6,0">
+                        <TextBox x:Name="LogBox" Margin="10" MinHeight="205" Height="220" FontFamily="Consolas" FontSize="11"
+                                 IsReadOnly="True" TextWrapping="NoWrap" AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+                    </GroupBox>
+
+                    <GroupBox x:Name="FpsLogGroup" Grid.Column="1" Header="FPS log" Margin="6,0,6,0"
+                              ToolTip="Stream FPS history only; scrcpy commands stay in Session log.">
+                        <Grid x:Name="FpsLogGrid" Margin="10">
+                            <TextBox x:Name="FpsLogBox" MinHeight="205" Height="220" FontFamily="Consolas" FontSize="11"
+                                     IsReadOnly="True" TextWrapping="NoWrap" AcceptsReturn="True"
+                                     VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox x:Name="RunningAppsGroup" Grid.Column="2" Header="Running apps" Margin="6,0,0,0">
+                        <Grid x:Name="RunningAppsGrid" Margin="10">
+                            <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <ListBox x:Name="RunningAppsList" MinHeight="170" SelectionMode="Single" MouseDoubleClick="RunningAppsList_MouseDoubleClick" SelectionChanged="RunningAppsList_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="4">
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Details}" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock x:Name="RunningAppsSummaryText" Grid.Row="1" Margin="2,7,2,4" Foreground="{DynamicResource SecondaryTextBrush}" Text="No active session"/>
+                            <WrapPanel x:Name="RunningAppsActionsPanel" Grid.Row="2" HorizontalAlignment="Right">
+                                <Button x:Name="RunningAppsRefreshButton" Margin="3" Click="RefreshRunningApps_Click" IsEnabled="False">Refresh</Button>
+                                <Button x:Name="BringTaskFrontButton" Margin="3" Click="BringTaskFront_Click" IsEnabled="False">Bring to front</Button>
+                                <Button x:Name="MoveTaskPhoneButton" Margin="3" Click="MoveTaskPhone_Click" IsEnabled="False">Move to phone</Button>
+                                <Button x:Name="CloseTaskButton" Margin="3" Click="CloseTask_Click" IsEnabled="False">Close</Button>
+                                <Button x:Name="CloseAllTasksButton" Margin="3" Click="CloseAllTasks_Click" IsEnabled="False">Close all</Button>
+                            </WrapPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid x:Name="FooterGrid" Grid.Row="2" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="StatusText" Grid.Row="0" Visibility="Collapsed" Height="0" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}" Text="Ready."/>
+            <WrapPanel x:Name="FooterActionsPanel" Grid.Row="1" HorizontalAlignment="Right">
+                <Button x:Name="FilesButton" MinWidth="82" Margin="5,0" Padding="14,6" Click="Files_Click">Files</Button>
+                <Button x:Name="PhoneScreenButton" MinWidth="185" Margin="5,0" Padding="14,6" Click="PhoneScreen_Click" IsEnabled="False">Turn phone screen off</Button>
+                <Button x:Name="StopButton" MinWidth="88" Margin="5,0" Padding="14,6" Click="Stop_Click" IsEnabled="False">Stop</Button>
+                <Button x:Name="StartButton" MinWidth="138" Margin="5,0" Padding="14,6" Click="Start_Click">Start DeX</Button>
+            </WrapPanel>
+        </Grid>
+    </Grid>
+</Window>

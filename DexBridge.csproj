@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>DexBridge</AssemblyName>
+    <RootNamespace>DexBridge</RootNamespace>
+    <Version>0.13.17</Version>
+    <AssemblyVersion>0.13.17.0</AssemblyVersion>
+    <FileVersion>0.13.17.0</FileVersion>
+    <ApplicationIcon>Assets\dexbridge-logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\id-ID.json" />
+    <Content Include="runtime\scrcpy\**\*">
+      <Link>runtime\scrcpy\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Resource Include="Assets\dexbridge-logo.png" />
+    <Content Include="Assets\dexbridge-logo.ico" />
+  </ItemGroup>
+</Project>
