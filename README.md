@@ -1,8 +1,5 @@
 # DexBridge
 
-**DexBridge v0.13.17** — Aplikasi desktop Windows untuk mengakses Samsung Galaxy melalui USB menggunakan scrcpy dan ADB. Mendukung Desktop DeX, App/Game, pencerminan layar, gamepad, pemantauan perangkat, dan transfer berkas.
-
-## Screenshot
 <p>
   <img src="screenshot/img1.png" width="300">
   <img src="screenshot/img2.png" width="300">
@@ -10,68 +7,81 @@
   <img src="screenshot/img4.png" width="300">
 </p>
 
-**Pengembang:** Ahmad Asyhari. **Platform:** Windows 10/11 x64, .NET 10 WPF. **Runtime scrcpy 5.0 + ADB** disertakan dalam paket rilis.
+**DexBridge** adalah aplikasi desktop Windows untuk perangkat Samsung Galaxy yang menyediakan fitur streaming Samsung DeX, mirroring layar ponsel, dan streaming aplikasi melalui USB dengan menggunakan scrcpy dan ADB.
 
-> **Status:** source telah melewati pemeriksaan statis. Build Windows dan uji Galaxy diperlukan; tidak ada klaim bahwa paket hasil build sudah diuji pada semua perangkat.
+Rilis ini menghadirkan aplikasi Windows portabel yang sudah menyertakan scrcpy dan ADB di dalamnya.
 
-## Unduh aplikasi siap pakai (.exe)
+## Fitur
 
-1. Buka tab **Actions** di repositori ini, pilih **Build DexBridge Windows**.
-2. Pilih workflow terbaru yang sukses (tanda centang hijau) dan unduh artifact **DexBridge-v0.13.17-win64-portable**.
-3. Ekstrak ZIP lalu klik dua kali **`DexBridge.exe`**. Jangan menjalankannya langsung dari ZIP.
-4. Hubungkan Samsung Galaxy via USB, aktifkan *USB debugging*, dan setujui dialog izin di ponsel.
+- **Samsung DeX:** Streaming lingkungan desktop dari perangkat Samsung Galaxy yang kompatibel ke Windows.
+- **Mirroring Layar Ponsel:** Menampilkan dan mengontrol layar ponsel secara langsung dari PC Anda.
+- **Streaming Aplikasi & Game:** Menjalankan aplikasi Android dengan profil tampilan dan streaming yang dapat dikonfigurasi.
+- **Pemantauan Performa:** Memantau FPS, penggunaan CPU, suhu perangkat, dan status termal.
+- **Streaming yang Dapat Disesuaikan:** Mengatur resolusi, DPI, bitrate, FPS, dan codec H.264/H.265.
+- **Dukungan Input:** Penerusan input keyboard, mouse, dan gamepad yang didukung.
+- **Manajemen File:** Mentransfer file antara PC dan perangkat Android Anda.
+- **Tema:** Terang (Light), Gelap (Dark), dan OLED Dark.
+- **Bahasa:** Bahasa Indonesia dan Bahasa Inggris.
+- **Pengaturan Tersimpan:** Memulihkan preferensi aplikasi antar sesi penggunaan.
 
-Rilis yang dibuat dari tag `v0.13.17` juga dapat diunduh lewat tab **Releases**, bila build dan publikasi berhasil. ZIP portabel memuat `DexBridge.exe` (self-contained, tidak perlu instal .NET) dan folder `runtime/scrcpy` (tidak perlu instal scrcpy atau ADB). **Tetap pertahankan folder runtime tersebut di samping EXE.**
+## Unduhan dan Instalasi
 
-Jika belum terlihat artifact, buka **Actions → Build DexBridge Windows → Run workflow** lalu pilih branch `main`. Build berlangsung pada runner Windows GitHub.
+Unduh **`DexBridge-v0.13.17-win64.zip`** yang ada pada bagian relase.
 
-## Untuk pengembang: jalankan dan build di laptop Windows sendiri
+1. Ekstrak file ZIP ke sebuah folder.
+2. Pastikan semua file dan folder yang disertakan tetap berada dalam satu lokasi yang sama.
+3. Jalankan **`DexBridge.exe`**.
+4. Hubungkan perangkat Samsung Galaxy yang kompatibel melalui USB.
+5. Aktifkan *USB debugging* dan berikan izin akses (*authorize*) untuk PC Anda.
+6. Pilih mode streaming dan mulai sesi Anda. **Tidak diperlukan instalasi terpisah untuk .NET, scrcpy, atau ADB.**
 
-**Anda tidak perlu GitHub Actions untuk membuat EXE.** Semua perintah berikut dijalankan pada laptop Windows Anda sendiri.
+## Persyaratan Sistem
 
-**Prasyarat:** Windows 10/11 x64, [**.NET 10 SDK**](https://dotnet.microsoft.com/download/dotnet/10.0), dan PowerShell. Untuk menguji fungsi Galaxy, siapkan kabel USB serta perangkat Samsung dengan *USB debugging* aktif dan telah mengizinkan komputer. Editor seperti Visual Studio bersifat opsional.
+- Windows 10 atau Windows 11 (64-bit)
+- Perangkat Samsung Galaxy dengan fitur *USB debugging* yang aktif
+- Kabel data USB
+- Dukungan Samsung DeX pada perangkat yang terhubung untuk mode desktop DeX
 
-1. Ekstrak ZIP source atau clone repositori ini ke folder lokal (contoh `D:\Projects\DexBridge`).
-2. Buka **PowerShell di folder proyek** (folder yang berisi `DexBridge.csproj`). Di File Explorer, buka folder tersebut, ketik `powershell` pada address bar, lalu tekan Enter.
-3. Pastikan .NET SDK terpasang:
+## Komponen yang Disertakan
 
-   ```powershell
-   dotnet --version
-   ```
+- DexBridge v0.13.17
+- scrcpy 5.0
+- Android Debug Bridge (ADB)
+- Dependensi *runtime* yang diperlukan
 
-4. **Jalankan dalam mode pengembangan**:
+Perangkat lunak pihak ketiga tetap tunduk pada lisensi masing-masing. Lihat pemberitahuan lisensi yang disertakan untuk rincian lebih lanjut.
 
-   ```powershell
-   .\tools\Start-Development.ps1
-   ```
+## Untuk Pengembang
 
-   Jika kebijakan PowerShell memblokir skrip, jalankan langsung menggunakan .NET CLI tanpa mengubah pengaturan sistem:
+Kode sumber dan dokumentasi *build* tersedia di repositori ini.
 
-   ```powershell
-   dotnet restore .\DexBridge.csproj
-   dotnet run --project .\DexBridge.csproj -c Debug
-   ```
+Untuk menjalankan dalam mode pengembangan:
 
-5. **Buat EXE portabel untuk pengguna akhir**:
+```powershell
+dotnet run --project DexBridge.csproj -c Debug
+```
 
-   ```powershell
-   .\tools\Build-Portable.ps1
-   ```
+Untuk membuat aplikasi Windows portabel:
 
-   Jika skrip tidak diizinkan, gunakan:
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Build-Portable.ps1
+```
 
-   ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Build-Portable.ps1
-   ```
+Proses *build* dari kode sumber memerlukan .NET 10 SDK.
 
-   Hasil build berada di:
+## Catatan
 
-   - **EXE:** `artifacts\DexBridge-v0.13.17-win64\DexBridge.exe`
-   - **ZIP distribusi:** `artifacts\DexBridge-v0.13.17-win64.zip`
+- Ini adalah aplikasi portabel, bukan *installer* Windows.
+- Pastikan direktori `runtime/scrcpy` yang disertakan tetap berada di lokasi yang sama dengan `DexBridge.exe`.
+- Kompatibilitas perangkat dan performa *streaming* dapat bervariasi tergantung pada model Samsung Galaxy dan versi Android Anda.
 
-6. Ekstrak ZIP hasil build di Windows, lalu klik dua kali **`DexBridge.exe`** untuk menguji. Paket dibuat *self-contained* sehingga pengguna akhir tidak perlu menginstal .NET, scrcpy, atau ADB sendiri; folder **`runtime\scrcpy` harus tetap berada bersama EXE**.
+---
+
+### Troubleshooting build portable: scrcpy/ADB tidak tersalin
 
 Untuk troubleshooting, verifikasi hasil build, dan langkah unggah ke GitHub, baca **[Panduan Developer: Build Lokal Windows](docs/PANDUAN-DEVELOPER-LOKAL.md)** dan [Panduan Build & Rilis](docs/BUILD-DAN-RILIS.md).
+
+Jika `dotnet publish` sudah berhasil tetapi pesan `bundled scrcpy/ADB runtime was not copied` muncul, masalah ada pada pengemasan runtime, bukan kompilasi C#. Gunakan `tools/Build-Portable.ps1` versi hotfix ini: skrip akan menyalin seluruh `runtime/scrcpy` secara eksplisit ke folder distribusi. Panduan dan pemulihan tanpa rebuild: [docs/BUILD-HOTFIX-RUNTIME.md](docs/BUILD-HOTFIX-RUNTIME.md).
 
 ## Dokumen
 
@@ -90,9 +100,5 @@ Untuk troubleshooting, verifikasi hasil build, dan langkah unggah ke GitHub, bac
 - Build tanpa penandatanganan kode dapat menampilkan peringatan Windows SmartScreen.
 - Sebagian fitur terkait Samsung DeX, Android 16, dan shell ADB dapat berbeda tergantung firmware Galaxy.
 
-DexBridge bukan produk resmi Samsung, Google, maupun Genymobile.
-
-
-### Troubleshooting build portable: scrcpy/ADB tidak tersalin
-
-Jika `dotnet publish` sudah berhasil tetapi pesan `bundled scrcpy/ADB runtime was not copied` muncul, masalah ada pada pengemasan runtime, bukan kompilasi C#. Gunakan `tools/Build-Portable.ps1` versi hotfix ini: skrip akan menyalin seluruh `runtime/scrcpy` secara eksplisit ke folder distribusi. Panduan dan pemulihan tanpa rebuild: [docs/BUILD-HOTFIX-RUNTIME.md](docs/BUILD-HOTFIX-RUNTIME.md).
+DexBridge bukan produk resmi Samsung, Google, maupun Genymobile. ini hanyalah project standalone, hanya sekedar meluangkan hobi.
+© Ahmad Asyhari
