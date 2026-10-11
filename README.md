@@ -6,6 +6,8 @@
 <p>
   <img src="screenshot/img1.png" width="300">
   <img src="screenshot/img2.png" width="300">
+  <img src="screenshot/img3.png" width="300">
+  <img src="screenshot/img4.png" width="300">
 </p>
 
 **Pengembang:** Ahmad Asyhari. **Platform:** Windows 10/11 x64, .NET 10 WPF. **Runtime scrcpy 5.0 + ADB** disertakan dalam paket rilis.
