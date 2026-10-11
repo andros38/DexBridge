@@ -2,6 +2,12 @@
 
 **DexBridge v0.13.17** — Aplikasi desktop Windows untuk mengakses Samsung Galaxy melalui USB menggunakan scrcpy dan ADB. Mendukung Desktop DeX, App/Game, pencerminan layar, gamepad, pemantauan perangkat, dan transfer berkas.
 
+## Screenshot
+<p>
+  <img src="screenshot/img1.png" width="300">
+  <img src="screenshot/img2.png" width="300">
+</p>
+
 **Pengembang:** Ahmad Asyhari. **Platform:** Windows 10/11 x64, .NET 10 WPF. **Runtime scrcpy 5.0 + ADB** disertakan dalam paket rilis.
 
 > **Status:** source telah melewati pemeriksaan statis. Build Windows dan uji Galaxy diperlukan; tidak ada klaim bahwa paket hasil build sudah diuji pada semua perangkat.
